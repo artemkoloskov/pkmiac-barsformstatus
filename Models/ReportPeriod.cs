@@ -13,8 +13,8 @@ namespace PKMIAC.BARSFormStatus.Models
 		public string Code { get; set; }
 		public DateTime StartDate { get; set; }
 		public DateTime EndDate { get; set; }
-		public bool? Neispolzuetsya { get; set; }
-		public bool? Zablokirovan { get; set; }
+		public bool? IsDisabled { get; set; }
+		public bool? IsBlocked { get; set; }
 		public Guid? Id { get; set; }
 		public string Name { get; set; }
 

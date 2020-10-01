@@ -11,7 +11,7 @@ namespace PKMIAC.BARSFormStatus.Models
 		}
 
 		public string Code { get; set; }
-		public bool? Neispolzuetsya { get; set; }
+		public bool? IsDisabled { get; set; }
 		public Guid? Id { get; set; }
 		public string Name { get; set; }
 

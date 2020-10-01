@@ -167,7 +167,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\FormBundlesController.cs" />
+    <Compile Include="Controllers\FormStatusController.cs" />
+    <Compile Include="Controllers\MetaFormsController.cs" />
     <Compile Include="Controllers\OrganizationsController.cs" />
+    <Compile Include="Controllers\ReportPeriodComponentsController.cs" />
+    <Compile Include="Controllers\ReportPeriodsController.cs" />
     <Compile Include="Data\BARSContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
