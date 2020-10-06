@@ -14,7 +14,7 @@ namespace PKMIAC.BARSFormStatus.Controllers
 	[RoutePrefix("api/Organizations")]
 	public class OrganizationsController : ApiController
 	{
-		private readonly BARSContext _db = new BARSContext();
+		private readonly BFSContext _db = new BFSContext();
 
 		// GET api/Organizations
 		public IQueryable<Organization> GetAllOrganizations()
@@ -27,7 +27,9 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		public async Task<IHttpActionResult> GetOrganization(Guid id)
 		{
 			Organization organization =
-				await _db.Organizations.Where(o => o.Id == id).Include(o => o.StoredFormData).FirstOrDefaultAsync();
+				await _db.Organizations
+				.Where(o => o.Id == id)
+				.FirstOrDefaultAsync();
 
 			if (organization == null)
 			{
@@ -37,12 +39,13 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			return Ok(organization);
 		}
 
-		// GET api/Organizations/Organization?code=33322211100
-		[Route("Organization")]
+		// GET api/Organizations?code=33322211100
 		public async Task<IHttpActionResult> GetOrganizationByCode(string code)
 		{
 			Organization organization =
-				await _db.Organizations.Where(o => o.Code == code).Include(o => o.StoredFormData).FirstOrDefaultAsync();
+				await _db.Organizations
+				.Where(o => o.Code == code)
+				.FirstOrDefaultAsync();
 
 			if (organization == null)
 			{

@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace PKMIAC.BARSFormStatus.Controllers
 {
-    [RoutePrefix("api/ReportPeriodComponents")]
-    public class ReportPeriodComponentsController : ApiController
-    {
-		private readonly BARSContext _db = new BARSContext();
+	[RoutePrefix("api/ReportPeriodComponents")]
+	public class ReportPeriodComponentsController : ApiController
+	{
+		private readonly BFSContext _db = new BFSContext();
 
 		// GET api/ReportPeriodComponents
 		public IQueryable<ReportPeriodComponent> GetAllReportPeriodComponents()
@@ -43,8 +43,7 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			return Ok(periodComponent);
 		}
 
-		// GET api/ReportPeriodComponents/ReportPeriodComponent?code=015
-		[Route("ReportPeriodComponent")]
+		// GET api/ReportPeriodComponents?code=015
 		public async Task<IHttpActionResult> GetReportPeriodComponentByCode(string code)
 		{
 			ReportPeriodComponent periodComponent =

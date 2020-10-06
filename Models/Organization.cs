@@ -8,6 +8,8 @@ namespace PKMIAC.BARSFormStatus.Models
 		public Organization()
 		{
 			StoredFormData = new HashSet<StoredFormData>();
+
+			ChainElements = new HashSet<ReportSubmitChainElement>();
 		}
 
 		public string Name { get; set; }
@@ -19,5 +21,6 @@ namespace PKMIAC.BARSFormStatus.Models
 		public Guid? Id { get; set; }
 
 		public virtual ICollection<StoredFormData> StoredFormData { get; set; }
+		public virtual ICollection<ReportSubmitChainElement> ChainElements { get; set; }
 	}
 }

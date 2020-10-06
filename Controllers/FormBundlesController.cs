@@ -11,23 +11,25 @@ using System.Web.Http;
 
 namespace PKMIAC.BARSFormStatus.Controllers
 {
-    [RoutePrefix("api/FormBundles")]
-    public class FormBundlesController : ApiController
-    {
-		private readonly BARSContext _db = new BARSContext();
+	[RoutePrefix("api/FormBundles")]
+	public class FormBundlesController : ApiController
+	{
+		private readonly BFSContext _db = new BFSContext();
 
 		// GET api/FormBundles
 		public IQueryable<FormBundle> GetAllFormBundles()
 		{
-			return from s in _db.FormBundles.Include(b => b.ReportPeriodComponent)
+			return from s in _db.FormBundles.Include(b => b.ReportPeriodComponents)
 				   select s;
 		}
 
 		// GET api/FormBundles/qdjn43-ekndjwe-2323nj-2323njn
-		public async Task<IHttpActionResult> GetFormBundles(Guid id)
+		public async Task<IHttpActionResult> GetFormBundle(Guid id)
 		{
 			FormBundle formBundle = await _db.FormBundles
-				.Where(b => b.Id == id).Include(b => b.ReportPeriodComponent).FirstOrDefaultAsync();
+				.Where(b => b.Id == id)
+				.Include(b => b.ReportPeriodComponents)
+				.FirstOrDefaultAsync();
 
 			if (formBundle == null)
 			{

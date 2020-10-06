@@ -7,7 +7,7 @@ namespace PKMIAC.BARSFormStatus.Models
 	{
 		public ReportPeriod()
 		{
-			ReportPeriodComponent = new HashSet<ReportPeriodComponent>();
+			ReportPeriodComponents = new HashSet<ReportPeriodComponent>();
 		}
 
 		public string Code { get; set; }
@@ -18,6 +18,6 @@ namespace PKMIAC.BARSFormStatus.Models
 		public Guid? Id { get; set; }
 		public string Name { get; set; }
 
-		public virtual ICollection<ReportPeriodComponent> ReportPeriodComponent { get; set; }
+		public virtual ICollection<ReportPeriodComponent> ReportPeriodComponents { get; set; }
 	}
 }

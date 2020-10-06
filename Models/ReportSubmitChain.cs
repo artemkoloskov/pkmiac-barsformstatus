@@ -7,7 +7,9 @@ namespace PKMIAC.BARSFormStatus.Models
 	{
 		public ReportSubmitChain()
 		{
-			Komponentotchetnogop = new HashSet<ReportPeriodComponent>();
+			ReportPeriodComponents = new HashSet<ReportPeriodComponent>();
+
+			ChainElements = new HashSet<ReportSubmitChainElement>();
 		}
 
 		public string Code { get; set; }
@@ -15,6 +17,7 @@ namespace PKMIAC.BARSFormStatus.Models
 		public Guid? Id { get; set; }
 		public string Name { get; set; }
 
-		public virtual ICollection<ReportPeriodComponent> Komponentotchetnogop { get; set; }
+		public virtual ICollection<ReportPeriodComponent> ReportPeriodComponents { get; set; }
+		public virtual ICollection<ReportSubmitChainElement> ChainElements { get; set; }
 	}
 }
