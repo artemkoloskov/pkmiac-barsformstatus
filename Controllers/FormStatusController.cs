@@ -30,9 +30,10 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			return Ok(storedFormData);
 		}
 
-		// GET api/FormStatus?organizationCode=33322211100&formCode=ДЗПК_М_Мониторинг&periodCode=Месячные_Июнь_2020&periodComponentCode=010&periodStart=01.12.2020&periodEnd=31.12.2020
+		// GET api/FormStatus?periodComponentId=asfd23erf-sa12-11ds-12ad-24fsdffs&organizationCode=33322211100&formCode=ДЗПК_М_Мониторинг&periodCode=Месячные_Июнь_2020&periodComponentCode=010&periodStart=01.12.2020&periodEnd=31.12.2020
 		public async Task<IHttpActionResult> GetFormStatus(
-			string organizationCode,
+			Guid? periodComponentId,
+			string organizationCode = null,
 			string formCode = null,
 			string periodStart = null,
 			string periodEnd = null,
@@ -44,12 +45,14 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			DateTime.TryParse(periodEnd, out DateTime endDate);
 
 			List<StoredFormData> storedFormData = await _db.StoredFormDatas
-				.Where(sd => sd.OrganizationNavigation.Code == organizationCode &&
-					formCode == null ? true : sd.MetaFormCode == formCode &&
-					periodComponentCode == null ? true : sd.ReportPeriodComponent.Code == periodComponentCode &&
-					periodCode == null ? true : sd.ReportPeriodComponent.ReportPeriod.Code == periodCode &&
-					startDate == DateTime.MinValue ? true : sd.ReportPeriodComponent.ReportPeriod.StartDate == startDate &&
-					endDate == DateTime.MinValue ? true : sd.ReportPeriodComponent.ReportPeriod.EndDate == endDate)
+				.Where(sd => sd.ReportPeriodComponentId == periodComponentId)
+				.Where(sd => organizationCode == null || sd.Organization.Code == organizationCode)
+				.Where(sd => formCode == null || sd.MetaFormCode == formCode)
+				.Where(sd => periodComponentCode == null || sd.ReportPeriodComponent.Code == periodComponentCode)
+				.Where(sd => periodCode == null || sd.ReportPeriodComponent.ReportPeriod.Code == periodCode)
+				.Where(sd => startDate == DateTime.MinValue || sd.ReportPeriodComponent.ReportPeriod.StartDate == startDate)
+				.Where(sd => endDate == DateTime.MinValue || sd.ReportPeriodComponent.ReportPeriod.EndDate == endDate)
+				.Include(sd => sd.Organization)
 				.ToListAsync();
 
 			if (storedFormData == null)

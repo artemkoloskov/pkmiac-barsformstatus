@@ -1,13 +1,10 @@
-﻿using PKMIAC.BARSFormStatus.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using PKMIAC.BARSFormStatus.Data;
+using PKMIAC.BARSFormStatus.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace PKMIAC.BARSFormStatus.Controllers
 {
@@ -23,13 +20,23 @@ namespace PKMIAC.BARSFormStatus.Controllers
 				   select s;
 		}
 
-		// GET api/Organizations/qdjn43-ekndjwe-2323nj-2323njn
-		public async Task<IHttpActionResult> GetOrganization(Guid id)
+		// GET api/Organizations/qdjn43-ekndjwe-2323nj-2323njn?includeStoredFormData=true
+		public async Task<IHttpActionResult> GetOrganization(Guid id, bool includeStoredFormData = false)
 		{
-			Organization organization =
-				await _db.Organizations
-				.Where(o => o.Id == id)
-				.FirstOrDefaultAsync();
+			IQueryable<Organization> request =
+				_db.Organizations
+				.Where(o => o.Id == id);
+
+			Organization organization;
+
+			if (includeStoredFormData)
+			{
+				organization = await request.Include(o => o.StoredFormData).FirstOrDefaultAsync();
+			}
+			else
+			{
+				organization = await request.FirstOrDefaultAsync();
+			}
 
 			if (organization == null)
 			{
@@ -39,13 +46,23 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			return Ok(organization);
 		}
 
-		// GET api/Organizations?code=33322211100
-		public async Task<IHttpActionResult> GetOrganizationByCode(string code)
+		// GET api/Organizations?code=33322211100&includeStoredFormData=true
+		public async Task<IHttpActionResult> GetOrganizationByCode(string code, bool includeStoredFormData = false)
 		{
-			Organization organization =
-				await _db.Organizations
-				.Where(o => o.Code == code)
-				.FirstOrDefaultAsync();
+			IQueryable<Organization> request =
+				_db.Organizations
+				.Where(o => o.Code == code);
+
+			Organization organization;
+
+			if (includeStoredFormData)
+			{
+				organization = await request.Include(o => o.StoredFormData).FirstOrDefaultAsync();
+			}
+			else
+			{
+				organization = await request.FirstOrDefaultAsync();
+			}
 
 			if (organization == null)
 			{

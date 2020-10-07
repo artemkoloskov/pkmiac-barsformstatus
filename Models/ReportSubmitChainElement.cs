@@ -7,7 +7,7 @@ namespace PKMIAC.BARSFormStatus.Models
 	{
 		public ReportSubmitChainElement()
 		{
-			ChildrenElemtsNavigation = new HashSet<ReportSubmitChainElement>();
+			ChildrenElemts = new HashSet<ReportSubmitChainElement>();
 		}
 
 		public Guid? OrganizationId { get; set; }
@@ -17,9 +17,9 @@ namespace PKMIAC.BARSFormStatus.Models
 		public Guid? Id { get; set; }
 		public string Name { get; set; }
 
-		public virtual ReportSubmitChainElement ParentChainElementNavigation { get; set; }
-		public virtual ICollection<ReportSubmitChainElement> ChildrenElemtsNavigation { get; set; }
-		public virtual Organization OrganizationNavigation { get; set; }
+		public virtual ReportSubmitChainElement ParentChainElement { get; set; }
+		public virtual ICollection<ReportSubmitChainElement> ChildrenElemts { get; set; }
+		public virtual Organization Organization { get; set; }
 		public virtual ReportSubmitChain ReportSubmitChain { get; set; }
 	}
 }

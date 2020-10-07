@@ -44,7 +44,10 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		public async Task<IHttpActionResult> GetReportPeriodByCode(string code)
 		{
 			ReportPeriod reportPeriod =
-				await _db.ReportPeriods.Where(rp => rp.Code == code).Include(rp => rp.ReportPeriodComponents).FirstOrDefaultAsync();
+				await _db.ReportPeriods
+				.Where(rp => rp.Code == code)
+				.Include(rp => rp.ReportPeriodComponents)
+				.FirstOrDefaultAsync();
 
 			if (reportPeriod == null)
 			{

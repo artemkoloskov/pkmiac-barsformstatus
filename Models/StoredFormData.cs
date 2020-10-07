@@ -14,9 +14,8 @@ namespace PKMIAC.BARSFormStatus.Models
 		public byte SubmitChainElementType { get; set; }
 		public byte ExpertStatusNumber { get; set; }
 		public Guid? Id { get; set; }
-		public string Name { get; set; }
 
 		public virtual ReportPeriodComponent ReportPeriodComponent { get; set; }
-		public virtual Organization OrganizationNavigation { get; set; }
+		public virtual Organization Organization { get; set; }
 	}
 }

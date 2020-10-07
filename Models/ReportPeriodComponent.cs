@@ -21,7 +21,7 @@ namespace PKMIAC.BARSFormStatus.Models
 
 		public virtual ReportSubmitChain ReportSubmitChain { get; set; }
 		public virtual ReportPeriod ReportPeriod { get; set; }
-		public virtual FormBundle FormsBundleNavigation { get; set; }
+		public virtual FormBundle FormsBundle { get; set; }
 		public virtual ICollection<StoredFormData> StoredFormData { get; set; }
 	}
 }

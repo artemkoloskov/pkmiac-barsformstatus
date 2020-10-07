@@ -22,9 +22,9 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			ReportSubmitChainElement chainElement = await _db.ReportSubmitChainElements
 				.Where(ce => ce.Id == id)
 				.Include(ce => ce.ReportSubmitChain)
-				.Include(ce => ce.ParentChainElementNavigation)
-				.Include(ce => ce.OrganizationNavigation)
-				.Include(ce => ce.ChildrenElemtsNavigation)
+				.Include(ce => ce.ParentChainElement)
+				.Include(ce => ce.Organization)
+				.Include(ce => ce.ChildrenElemts)
 				.FirstOrDefaultAsync();
 
 			if (chainElement == null)
@@ -41,9 +41,9 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			ReportSubmitChainElement chainElement = await _db.ReportSubmitChainElements
 				.Where(ce => ce.ReportSubmitChain.Code == chainCode)
 				.Include(ce => ce.ReportSubmitChain)
-				.Include(ce => ce.ParentChainElementNavigation)
-				.Include(ce => ce.OrganizationNavigation)
-				.Include(ce => ce.ChildrenElemtsNavigation)
+				.Include(ce => ce.ParentChainElement)
+				.Include(ce => ce.Organization)
+				.Include(ce => ce.ChildrenElemts)
 				.FirstOrDefaultAsync();
 
 			if (chainElement == null)

@@ -35,7 +35,7 @@ namespace PKMIAC.BARSFormStatus.Data
 		{
 			if (!optionsBuilder.IsConfigured)
 			{
-				_ = optionsBuilder.UseOracle(ConfigurationManager.ConnectionStrings["BARSTestConnectionString"].ConnectionString,
+				_ = optionsBuilder.UseOracle(ConfigurationManager.ConnectionStrings["BARSConnectionString"].ConnectionString,
 					options => options.UseOracleSQLCompatibility("11"));
 			}
 
@@ -129,7 +129,7 @@ namespace PKMIAC.BARSFormStatus.Data
 					.HasForeignKey(d => d.ReportPeriodId)
 					.HasConstraintName("FK_KOMPONENTOTCHETNO_$$B200");
 
-				entity.HasOne(d => d.FormsBundleNavigation)
+				entity.HasOne(d => d.FormsBundle)
 					.WithMany(p => p.ReportPeriodComponents)
 					.HasForeignKey(d => d.FormsBundleId)
 					.HasConstraintName("FK_KOMPONENTOTCHETNO_$$B198");
@@ -222,7 +222,7 @@ namespace PKMIAC.BARSFormStatus.Data
 				entity.HasIndex(e => new { e.OrganizationId, e.MetaFormCode, e.ReportPeriodComponentId, e.SubmitChainElementType })
 					.HasName("IDX_BARS_$$B66");
 
-				entity.HasIndex(e => new { e.MetaFormCode, e.StatusNumber, e.InternalConstraintsStatusNumber, e.ExternalConstraintsStatusNumber, e.ReportPeriodComponentId, e.Id, e.Name })
+				entity.HasIndex(e => new { e.MetaFormCode, e.StatusNumber, e.InternalConstraintsStatusNumber, e.ExternalConstraintsStatusNumber, e.ReportPeriodComponentId, e.Id })
 					.HasName("IDX_BARS_$$B285");
 
 				entity.Property(e => e.Id)
@@ -237,11 +237,6 @@ namespace PKMIAC.BARSFormStatus.Data
 				entity.Property(e => e.SubmitChainElementType).HasColumnName("IELEMENTCEPOCHKI");
 
 				entity.Property(e => e.ReportPeriodComponentId).HasColumnName("KOMPONENTPERIODA_ID");
-
-				entity.Property(e => e.Name)
-					.HasColumnName("NAME")
-					.HasMaxLength(600)
-					.IsUnicode(false);
 
 				entity.Property(e => e.ExternalConstraintsStatusNumber).HasColumnName("PROVERENYMEJEFORUVYAZKI");
 
@@ -258,7 +253,7 @@ namespace PKMIAC.BARSFormStatus.Data
 					.HasForeignKey(d => d.ReportPeriodComponentId)
 					.HasConstraintName("FK_STOREDFORMDATA_$$B182");
 
-				entity.HasOne(d => d.OrganizationNavigation)
+				entity.HasOne(d => d.Organization)
 					.WithMany(p => p.StoredFormData)
 					.HasForeignKey(d => d.OrganizationId)
 					.HasConstraintName("FK_STOREDFORMDATA_$$B181");
@@ -361,12 +356,12 @@ namespace PKMIAC.BARSFormStatus.Data
 
 				entity.Property(e => e.OrganizationId).HasColumnName("UCHREJEDENIE_ID");
 
-				entity.HasOne(d => d.ParentChainElementNavigation)
-					.WithMany(p => p.ChildrenElemtsNavigation)
+				entity.HasOne(d => d.ParentChainElement)
+					.WithMany(p => p.ChildrenElemts)
 					.HasForeignKey(d => d.ParentId)
 					.HasConstraintName("FK_ELEMENTCEPOCHKI_$$B206");
 
-				entity.HasOne(d => d.OrganizationNavigation)
+				entity.HasOne(d => d.Organization)
 					.WithMany(p => p.ChainElements)
 					.HasForeignKey(d => d.OrganizationId)
 					.HasConstraintName("FK_ELEMENTCEPOCHKI_$$B205");

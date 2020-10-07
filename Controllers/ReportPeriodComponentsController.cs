@@ -30,7 +30,8 @@ namespace PKMIAC.BARSFormStatus.Controllers
 				await _db.ReportPeriodComponents
 				.Where(rpc => rpc.Id == id)
 				.Include(rpc => rpc.StoredFormData)
-				.Include(rpc => rpc.FormsBundleNavigation)
+					.ThenInclude(sf => sf.Organization)
+				.Include(rpc => rpc.FormsBundle)
 				.Include(rpc => rpc.ReportPeriod)
 				.Include(rpc => rpc.ReportSubmitChain)
 				.FirstOrDefaultAsync();
@@ -50,7 +51,7 @@ namespace PKMIAC.BARSFormStatus.Controllers
 				await _db.ReportPeriodComponents
 				.Where(o => o.Code == code)
 				.Include(rpc => rpc.StoredFormData)
-				.Include(rpc => rpc.FormsBundleNavigation)
+				.Include(rpc => rpc.FormsBundle)
 				.Include(rpc => rpc.ReportPeriod)
 				.Include(rpc => rpc.ReportSubmitChain)
 				.FirstOrDefaultAsync();
