@@ -86,7 +86,7 @@ namespace PKMIAC.BARSFormStatus.Data
 				entity.HasIndex(e => new { e.ReportSubmitChainId, e.ReportPeriodId })
 					.HasName("IDX_BARS_$$B86");
 
-				entity.HasIndex(e => new { e.Code, e.FormsBundleId, e.ReportSubmitChainId, e.ReportPeriodId, e.Id, e.Name })
+				entity.HasIndex(e => new { e.Code, e.FormBundleId, e.ReportSubmitChainId, e.ReportPeriodId, e.Id, e.Name })
 					.HasName("IDX_BARS_$$B255");
 
 				entity.Property(e => e.Id)
@@ -117,7 +117,7 @@ namespace PKMIAC.BARSFormStatus.Data
 
 				entity.Property(e => e.ReportPeriodId).HasColumnName("OTCHETNYIPERIOD_ID");
 
-				entity.Property(e => e.FormsBundleId).HasColumnName("PAKETFORM");
+				entity.Property(e => e.FormBundleId).HasColumnName("PAKETFORM");
 
 				entity.HasOne(d => d.ReportSubmitChain)
 					.WithMany(p => p.ReportPeriodComponents)
@@ -131,7 +131,7 @@ namespace PKMIAC.BARSFormStatus.Data
 
 				entity.HasOne(d => d.FormsBundle)
 					.WithMany(p => p.ReportPeriodComponents)
-					.HasForeignKey(d => d.FormsBundleId)
+					.HasForeignKey(d => d.FormBundleId)
 					.HasConstraintName("FK_KOMPONENTOTCHETNO_$$B198");
 			});
 
@@ -357,7 +357,7 @@ namespace PKMIAC.BARSFormStatus.Data
 				entity.Property(e => e.OrganizationId).HasColumnName("UCHREJEDENIE_ID");
 
 				entity.HasOne(d => d.ParentChainElement)
-					.WithMany(p => p.ChildrenElemts)
+					.WithMany(p => p.ChildrenElements)
 					.HasForeignKey(d => d.ParentId)
 					.HasConstraintName("FK_ELEMENTCEPOCHKI_$$B206");
 

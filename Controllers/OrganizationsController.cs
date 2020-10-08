@@ -20,7 +20,7 @@ namespace PKMIAC.BARSFormStatus.Controllers
 				   select s;
 		}
 
-		// GET api/Organizations/qdjn43-ekndjwe-2323nj-2323njn?includeStoredFormData=true
+		// GET api/Organizations/06caa0d2-3efd-47d9-85fe-1d1ff5899b48?includeStoredFormData=true
 		public async Task<IHttpActionResult> GetOrganization(Guid id, bool includeStoredFormData = false)
 		{
 			IQueryable<Organization> request =
@@ -46,12 +46,38 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			return Ok(organization);
 		}
 
-		// GET api/Organizations?code=33322211100&includeStoredFormData=true
+		// GET api/Organizations?code=030010106&includeStoredFormData=true
 		public async Task<IHttpActionResult> GetOrganizationByCode(string code, bool includeStoredFormData = false)
 		{
 			IQueryable<Organization> request =
 				_db.Organizations
 				.Where(o => o.Code == code);
+
+			Organization organization;
+
+			if (includeStoredFormData)
+			{
+				organization = await request.Include(o => o.StoredFormData).FirstOrDefaultAsync();
+			}
+			else
+			{
+				organization = await request.FirstOrDefaultAsync();
+			}
+
+			if (organization == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(organization);
+		}
+
+		// GET api/Organizations?name=КГБУЗ%20"Владивостокская%20клиническая%20больница%20№%201"&includeStoredFormData=true
+		public async Task<IHttpActionResult> GetOrganizationByName(string name, bool includeStoredFormData = false)
+		{
+			IQueryable<Organization> request =
+				_db.Organizations
+				.Where(o => o.Name == name);
 
 			Organization organization;
 

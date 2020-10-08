@@ -16,7 +16,7 @@ namespace PKMIAC.BARSFormStatus.Controllers
 	{
 		private readonly BFSContext _db = new BFSContext();
 
-		// GET api/SubmitChainElements/qdjn43-ekndjwe-2323nj-2323njn
+		// GET api/SubmitChainElements/2804d900-3477-443a-9aa9-4f74b7f924f7
 		public async Task<IHttpActionResult> GetReportSubmitChainElement(Guid id)
 		{
 			ReportSubmitChainElement chainElement = await _db.ReportSubmitChainElements
@@ -24,7 +24,7 @@ namespace PKMIAC.BARSFormStatus.Controllers
 				.Include(ce => ce.ReportSubmitChain)
 				.Include(ce => ce.ParentChainElement)
 				.Include(ce => ce.Organization)
-				.Include(ce => ce.ChildrenElemts)
+				.Include(ce => ce.ChildrenElements)
 				.FirstOrDefaultAsync();
 
 			if (chainElement == null)
@@ -35,23 +35,19 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			return Ok(chainElement);
 		}
 
-		// GET api/SubmitChainElements?chainCode=0812%2005
-		public async Task<IHttpActionResult> GetReportSubmitChainElementByChainCode(string chainCode)
+		// GET api/SubmitChainElements?chainId=d3f29683-75ab-46da-844e-a5416508482b
+		public async Task<IHttpActionResult> GetReportSubmitChainElementByChainCode(Guid? chainId)
 		{
-			ReportSubmitChainElement chainElement = await _db.ReportSubmitChainElements
-				.Where(ce => ce.ReportSubmitChain.Code == chainCode)
-				.Include(ce => ce.ReportSubmitChain)
-				.Include(ce => ce.ParentChainElement)
-				.Include(ce => ce.Organization)
-				.Include(ce => ce.ChildrenElemts)
-				.FirstOrDefaultAsync();
+			List<ReportSubmitChainElement> chainElements = await _db.ReportSubmitChainElements
+				.Where(ce => ce.ReportSubmitChain.Id == chainId)
+				.ToListAsync();
 
-			if (chainElement == null)
+			if (chainElements == null)
 			{
 				return NotFound();
 			}
 
-			return Ok(chainElement);
+			return Ok(chainElements);
 		}
 	}
 }

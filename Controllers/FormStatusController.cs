@@ -16,11 +16,20 @@ namespace PKMIAC.BARSFormStatus.Controllers
 	{
 		private readonly BFSContext _db = new BFSContext();
 
-		// GET api/FormStatus/qdjn43-ekndjwe-2323nj-2323njn
+		/// <summary>
+		/// Получить конкретные хранимые данные формы
+		/// </summary>
+		/// <param name="id">Уникальный идентификатор хранимых данных формы</param>
+		/// <returns>Хранимые данные формы с загруженной организацией, к которой
+		/// прикреплены данные формы</returns>
+		// GET api/FormStatus/711f7a03-4237-4b04-ad7e-64dac0471e61
 		public async Task<IHttpActionResult> GetFormStatus(Guid id)
 		{
-			StoredFormData storedFormData = await _db.StoredFormDatas
-				.Where(sd => sd.Id == id).FirstOrDefaultAsync();
+			StoredFormData storedFormData = 
+				await _db.StoredFormDatas
+				.Where(sd => sd.Id == id)
+				.Include(sd => sd.Organization)
+				.FirstOrDefaultAsync();
 
 			if (storedFormData == null)
 			{
@@ -30,28 +39,23 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			return Ok(storedFormData);
 		}
 
-		// GET api/FormStatus?periodComponentId=asfd23erf-sa12-11ds-12ad-24fsdffs&organizationCode=33322211100&formCode=ДЗПК_М_Мониторинг&periodCode=Месячные_Июнь_2020&periodComponentCode=010&periodStart=01.12.2020&periodEnd=31.12.2020
+		/// <summary>
+		/// Получить список хранимых данных форм, принадлежащих
+		/// определенному компоненту отчного периода, с возможностью фильтрации списка
+		/// по коду организации
+		/// </summary>
+		/// <param name="periodComponentId">Уникальный идентификатор компонента отчетного периода
+		/// которому принадлежат загружаемые хранимые данные форм</param>
+		/// <param name="organizationCode">Код организации, по которой нужно отфильтровать список</param>
+		/// <returns></returns>
+		// GET api/FormStatus?periodComponentId=cf8989b2-c120-400b-9ccf-4488d482c47b&organizationCode=030683508
 		public async Task<IHttpActionResult> GetFormStatus(
 			Guid? periodComponentId,
-			string organizationCode = null,
-			string formCode = null,
-			string periodStart = null,
-			string periodEnd = null,
-			string periodCode = null,
-			string periodComponentCode = null)
+			string organizationCode = null)
 		{
-			DateTime.TryParse(periodStart, out DateTime startDate);
-
-			DateTime.TryParse(periodEnd, out DateTime endDate);
-
 			List<StoredFormData> storedFormData = await _db.StoredFormDatas
-				.Where(sd => sd.ReportPeriodComponentId == periodComponentId)
+				.Where(sd => !periodComponentId.HasValue || sd.ReportPeriodComponentId == periodComponentId)
 				.Where(sd => organizationCode == null || sd.Organization.Code == organizationCode)
-				.Where(sd => formCode == null || sd.MetaFormCode == formCode)
-				.Where(sd => periodComponentCode == null || sd.ReportPeriodComponent.Code == periodComponentCode)
-				.Where(sd => periodCode == null || sd.ReportPeriodComponent.ReportPeriod.Code == periodCode)
-				.Where(sd => startDate == DateTime.MinValue || sd.ReportPeriodComponent.ReportPeriod.StartDate == startDate)
-				.Where(sd => endDate == DateTime.MinValue || sd.ReportPeriodComponent.ReportPeriod.EndDate == endDate)
 				.Include(sd => sd.Organization)
 				.ToListAsync();
 

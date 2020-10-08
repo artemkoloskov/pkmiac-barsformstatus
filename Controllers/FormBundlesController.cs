@@ -15,15 +15,25 @@ namespace PKMIAC.BARSFormStatus.Controllers
 	public class FormBundlesController : ApiController
 	{
 		private readonly BFSContext _db = new BFSContext();
-
+		
+		/// <summary>
+		/// Получить полный список доступных пакетов форм
+		/// </summary>
+		/// <returns>Списиок пакетов форм</returns>
 		// GET api/FormBundles
 		public IQueryable<FormBundle> GetAllFormBundles()
 		{
-			return from s in _db.FormBundles.Include(b => b.ReportPeriodComponents)
+			return from s in _db.FormBundles
 				   select s;
 		}
 
-		// GET api/FormBundles/qdjn43-ekndjwe-2323nj-2323njn
+		/// <summary>
+		/// Получить конкретный пакет форм
+		/// </summary>
+		/// <param name="id">Уникальный идентификатор пакета форм</param>
+		/// <returns>Пакет форм с загруженым списком компонентов отчетных периодов,
+		/// которые его используют</returns>
+		// GET api/FormBundles/03b15001-87cf-45ba-be9b-093c3de47388
 		public async Task<IHttpActionResult> GetFormBundle(Guid id)
 		{
 			FormBundle formBundle = await _db.FormBundles

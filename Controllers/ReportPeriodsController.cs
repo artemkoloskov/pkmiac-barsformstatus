@@ -23,7 +23,7 @@ namespace PKMIAC.BARSFormStatus.Controllers
 				   select s;
 		}
 
-		// GET api/ReportPeriods/qdjn43-ekndjwe-2323nj-2323njn
+		// GET api/ReportPeriods/4811d2e9-34bc-4aa3-939f-dedefa475d68
 		public async Task<IHttpActionResult> GetReportPeriod(Guid id)
 		{
 			ReportPeriod reportPeriod =
@@ -40,7 +40,7 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			return Ok(reportPeriod);
 		}
 
-		// GET api/ReportPeriod?code=Месячные_Октябрь_2020
+		// GET api/ReportPeriod?code=ДЗПК_М_ИнфоОФедералИКраевДоплатахРаботникам
 		public async Task<IHttpActionResult> GetReportPeriodByCode(string code)
 		{
 			ReportPeriod reportPeriod =

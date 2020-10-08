@@ -11,7 +11,7 @@ namespace PKMIAC.BARSFormStatus.Models
 		}
 
 		public string Code { get; set; }
-		public Guid? FormsBundleId { get; set; }
+		public Guid? FormBundleId { get; set; }
 		public Guid? ReportSubmitChainId { get; set; }
 		public Guid? ReportPeriodId { get; set; }
 		public string EqualityGroup { get; set; }

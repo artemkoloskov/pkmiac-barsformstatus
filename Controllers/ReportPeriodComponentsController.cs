@@ -23,7 +23,7 @@ namespace PKMIAC.BARSFormStatus.Controllers
 				   select s;
 		}
 
-		// GET api/ReportPeriodComponents/qdjn43-ekndjwe-2323nj-2323njn
+		// GET api/ReportPeriodComponents/cf8989b2-c120-400b-9ccf-4488d482c47b
 		public async Task<IHttpActionResult> GetReportPeriodComponent(Guid id)
 		{
 			ReportPeriodComponent periodComponent =
@@ -44,24 +44,49 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			return Ok(periodComponent);
 		}
 
-		// GET api/ReportPeriodComponents?code=015
-		public async Task<IHttpActionResult> GetReportPeriodComponentByCode(string code)
+		// GET api/ReportPeriodComponents?periodId=4811d2e9-34bc-4aa3-939f-dedefa475d68&name=18.%2002.10.2020&code=018
+		public async Task<IHttpActionResult> GetReportPeriodComponentByCode(
+			Guid? periodId,
+			string name = null,
+			string code = null)
 		{
-			ReportPeriodComponent periodComponent =
-				await _db.ReportPeriodComponents
-				.Where(o => o.Code == code)
-				.Include(rpc => rpc.StoredFormData)
-				.Include(rpc => rpc.FormsBundle)
-				.Include(rpc => rpc.ReportPeriod)
-				.Include(rpc => rpc.ReportSubmitChain)
-				.FirstOrDefaultAsync();
+			var request =
+				_db.ReportPeriodComponents
+				.Where(rpc => rpc.ReportPeriodId == periodId);
 
-			if (periodComponent == null)
+			if (code != null || name != null)
 			{
-				return NotFound();
+				ReportPeriodComponent periodComponent =
+					await request
+					.Where(rpc => name == null || rpc.Name == name)
+					.Where(rpc => code == null || rpc.Code == code)
+					.Include(rpc => rpc.StoredFormData)
+					.Include(rpc => rpc.FormsBundle)
+					.Include(rpc => rpc.ReportPeriod)
+					.Include(rpc => rpc.ReportSubmitChain)
+					.FirstOrDefaultAsync();
+
+				if (periodComponent != null)
+				{
+					return Ok(periodComponent);
+				}
+			}
+			else
+			{
+				List<ReportPeriodComponent> periodComponents =
+					await request
+					.OrderBy(rpc => rpc.Code)
+					.ToListAsync();
+
+				if (periodComponents != null)
+				{
+					return Ok(periodComponents);
+				}
 			}
 
-			return Ok(periodComponent);
+			return NotFound();
+			
+			
 		}
 	}
 }

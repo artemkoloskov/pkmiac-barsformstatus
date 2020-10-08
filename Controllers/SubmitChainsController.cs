@@ -23,13 +23,12 @@ namespace PKMIAC.BARSFormStatus.Controllers
 				   select s;
 		}
 
-		// GET api/SubmitChains/qdjn43-ekndjwe-2323nj-2323njn
+		// GET api/SubmitChains/d3f29683-75ab-46da-844e-a5416508482b
 		public async Task<IHttpActionResult> GetSubmitChain(Guid id)
 		{
 			ReportSubmitChain submitChain = await _db.ReportSubmitChains
 				.Where(sc => sc.Id == id)
 				.Include(sc => sc.ReportPeriodComponents)
-				.Include(sc => sc.ChainElements)
 				.FirstOrDefaultAsync();
 
 			if (submitChain == null)
@@ -40,13 +39,12 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			return Ok(submitChain);
 		}
 
-		// GET api/SubmitChains?code=0145%2003
+		// GET api/SubmitChains?code=0971%2001
 		public async Task<IHttpActionResult> GetSubmitChainByCode(string code)
 		{
 			ReportSubmitChain submitChain = await _db.ReportSubmitChains
 				.Where(sc => sc.Code == code)
 				.Include(sc => sc.ReportPeriodComponents)
-				.Include(sc => sc.ChainElements)
 				.FirstOrDefaultAsync();
 
 			if (submitChain == null)
