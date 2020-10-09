@@ -17,6 +17,7 @@ namespace PKMIAC.BARSFormStatus
 			//Конфигурация службы для возврата данных в формате JSON
 			config.Formatters.Add(new BrowserJsonFormatter());
 
+
 			// Маршруты веб-API
 			config.MapHttpAttributeRoutes();
 

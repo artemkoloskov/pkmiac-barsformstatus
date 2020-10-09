@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Web.Http.Description;
 
 namespace PKMIAC.BARSFormStatus.Controllers
 {
@@ -16,34 +17,54 @@ namespace PKMIAC.BARSFormStatus.Controllers
 	{
 		private readonly BFSContext _db = new BFSContext();
 
+		/// <summary>
+		/// Получить список цепочек сдачи отчетности, с возможностью фильтрации по
+		/// коду цепочки. Фильтрованый список содержит загруженые компоненты отчетных периодов,
+		/// к которым относится цепочка.
+		/// 
+		/// GET api/SubmitChains
+		/// </summary>
+		/// <param name="code">Код цепочки сдачи отчтености</param>
+		/// <returns>Список цепочек сдачи отчетности</returns>
 		// GET api/SubmitChains
-		public IQueryable<ReportSubmitChain> GetAllSubmitChains()
+		[ResponseType(typeof(List<ReportSubmitChain>))]
+		public async Task<IHttpActionResult> GetAllSubmitChains(string code = null)
 		{
-			return from s in _db.ReportSubmitChains
-				   select s;
-		}
+			var request = 
+				_db.ReportSubmitChains
+				.Where(sc => code == null || sc.Code == code);
 
-		// GET api/SubmitChains/d3f29683-75ab-46da-844e-a5416508482b
-		public async Task<IHttpActionResult> GetSubmitChain(Guid id)
-		{
-			ReportSubmitChain submitChain = await _db.ReportSubmitChains
-				.Where(sc => sc.Id == id)
-				.Include(sc => sc.ReportPeriodComponents)
-				.FirstOrDefaultAsync();
+			if (code != null)
+			{
+				request = request
+					.Include(sc => sc.ReportPeriodComponents);
+			}
 
-			if (submitChain == null)
+			List<ReportSubmitChain> submitChains = 
+				await request.ToListAsync();
+
+			if (submitChains == null)
 			{
 				return NotFound();
 			}
 
-			return Ok(submitChain);
+			return Ok(submitChains);
 		}
 
-		// GET api/SubmitChains?code=0971%2001
-		public async Task<IHttpActionResult> GetSubmitChainByCode(string code)
+		/// <summary>
+		/// Получить конкретную цепочку сдачи отчетности с загружеными компонентами отчетных периодов,
+		/// к которым относится цепочка.
+		/// 
+		/// GET api/SubmitChains/d3f29683-75ab-46da-844e-a5416508482b
+		/// </summary>
+		/// <param name="id">Уникальный идентификтор цепочки</param>
+		/// <returns>Цепочка сдачи отчетности</returns>
+		// GET api/SubmitChains/d3f29683-75ab-46da-844e-a5416508482b
+		[ResponseType(typeof(ReportSubmitChain))]
+		public async Task<IHttpActionResult> GetSubmitChain(Guid id)
 		{
 			ReportSubmitChain submitChain = await _db.ReportSubmitChains
-				.Where(sc => sc.Code == code)
+				.Where(sc => sc.Id == id)
 				.Include(sc => sc.ReportPeriodComponents)
 				.FirstOrDefaultAsync();
 

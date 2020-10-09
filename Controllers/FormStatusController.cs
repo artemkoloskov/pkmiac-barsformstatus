@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Web.Http.Description;
 
 namespace PKMIAC.BARSFormStatus.Controllers
 {
@@ -18,11 +19,14 @@ namespace PKMIAC.BARSFormStatus.Controllers
 
 		/// <summary>
 		/// Получить конкретные хранимые данные формы
+		/// 
+		/// GET api/FormStatus/711f7a03-4237-4b04-ad7e-64dac0471e61
 		/// </summary>
 		/// <param name="id">Уникальный идентификатор хранимых данных формы</param>
 		/// <returns>Хранимые данные формы с загруженной организацией, к которой
 		/// прикреплены данные формы</returns>
 		// GET api/FormStatus/711f7a03-4237-4b04-ad7e-64dac0471e61
+		[ResponseType(typeof(StoredFormData))]
 		public async Task<IHttpActionResult> GetFormStatus(Guid id)
 		{
 			StoredFormData storedFormData = 
@@ -43,12 +47,15 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		/// Получить список хранимых данных форм, принадлежащих
 		/// определенному компоненту отчного периода, с возможностью фильтрации списка
 		/// по коду организации
+		/// 
+		/// GET api/FormStatus?periodComponentId=cf8989b2-c120-400b-9ccf-4488d482c47b&organizationCode=030683508
 		/// </summary>
 		/// <param name="periodComponentId">Уникальный идентификатор компонента отчетного периода
 		/// которому принадлежат загружаемые хранимые данные форм</param>
 		/// <param name="organizationCode">Код организации, по которой нужно отфильтровать список</param>
 		/// <returns></returns>
 		// GET api/FormStatus?periodComponentId=cf8989b2-c120-400b-9ccf-4488d482c47b&organizationCode=030683508
+		[ResponseType(typeof(List<StoredFormData>))]
 		public async Task<IHttpActionResult> GetFormStatus(
 			Guid? periodComponentId,
 			string organizationCode = null)

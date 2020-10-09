@@ -195,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Assets\DataModelDiagram.png" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>

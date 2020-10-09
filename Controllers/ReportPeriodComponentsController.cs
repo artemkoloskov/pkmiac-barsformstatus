@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Web.Http.Description;
 
 namespace PKMIAC.BARSFormStatus.Controllers
 {
@@ -16,6 +17,12 @@ namespace PKMIAC.BARSFormStatus.Controllers
 	{
 		private readonly BFSContext _db = new BFSContext();
 
+		/// <summary>
+		/// Получить список всех компонентов отчетных периодов
+		/// 
+		/// GET api/ReportPeriodComponents
+		/// </summary>
+		/// <returns>Полный список компонентов отчетных периодов</returns>
 		// GET api/ReportPeriodComponents
 		public IQueryable<ReportPeriodComponent> GetAllReportPeriodComponents()
 		{
@@ -23,7 +30,18 @@ namespace PKMIAC.BARSFormStatus.Controllers
 				   select s;
 		}
 
+		/// <summary>
+		/// Получить конкретный компонент отчетного периода, с загруженными хранимыми данныи форм (с 
+		/// загруженной организацие, которой принадлежать хранимые данные), загруженным пкетом форм,
+		/// загруженным отчетным периодом, которому принадлежит компонент, загруженной цеочкой
+		/// сдачи отчетности.
+		/// 
+		/// GET api/ReportPeriodComponents/cf8989b2-c120-400b-9ccf-4488d482c47b
+		/// </summary>
+		/// <param name="id">Уникальный идентификатор компонента отчетного периода</param>
+		/// <returns>Компонент отчетного периода</returns>
 		// GET api/ReportPeriodComponents/cf8989b2-c120-400b-9ccf-4488d482c47b
+		[ResponseType(typeof(ReportPeriodComponent))]
 		public async Task<IHttpActionResult> GetReportPeriodComponent(Guid id)
 		{
 			ReportPeriodComponent periodComponent =
@@ -44,7 +62,21 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			return Ok(periodComponent);
 		}
 
+		/// <summary>
+		/// Получить список компонентов конкретного отчетного периода, с возможностью фильтрации по
+		/// наименованию компонента или его кода. С загруженными хранимыми данныи форм (с 
+		/// загруженной организацие, которой принадлежать хранимые данные), загруженным пкетом форм,
+		/// загруженным отчетным периодом, которому принадлежит компонент, загруженной цеочкой
+		/// сдачи отчетности. Список отсортирован по коду компонента очтетного периода, по возрастанию.
+		/// 
+		/// GET api/ReportPeriodComponents?periodId=4811d2e9-34bc-4aa3-939f-dedefa475d68&name=18.%2002.10.2020&code=018
+		/// </summary>
+		/// <param name="periodId">Уникальный идентификатор отчетного периода</param>
+		/// <param name="name">Наименование компонента отчетного периода</param>
+		/// <param name="code">Код компонента отчетного периода</param>
+		/// <returns>Список компонентов отчетного периода</returns>
 		// GET api/ReportPeriodComponents?periodId=4811d2e9-34bc-4aa3-939f-dedefa475d68&name=18.%2002.10.2020&code=018
+		[ResponseType(typeof(ReportPeriodComponent))]
 		public async Task<IHttpActionResult> GetReportPeriodComponentByCode(
 			Guid? periodId,
 			string name = null,

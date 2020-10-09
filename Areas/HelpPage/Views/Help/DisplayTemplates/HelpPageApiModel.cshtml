@@ -11,12 +11,12 @@
 <div>
     <p>@description.Documentation</p>
 
-    <h2>Request Information</h2>
+    <h2>Инофмация о вызове</h2>
 
-    <h3>URI Parameters</h3>
+    <h3>Параметры URI</h3>
     @Html.DisplayFor(m => m.UriParameters, "Parameters")
 
-    <h3>Body Parameters</h3>
+    <h3>Параметры тела вызова</h3>
 
     <p>@Model.RequestDocumentation</p>
 
@@ -30,18 +30,18 @@
     }
     else
     {
-        <p>None.</p>
+        <p>Нет.</p>
     }
 
     @if (Model.SampleRequests.Count > 0)
     {
-        <h3>Request Formats</h3>
+        <h3>Форматы вызова</h3>
         @Html.DisplayFor(m => m.SampleRequests, "Samples")
     }
 
-    <h2>Response Information</h2>
+    <h2>Информация об ответе</h2>
 
-    <h3>Resource Description</h3>
+    <h3>Описание ответа</h3>
 
     <p>@description.ResponseDescription.Documentation</p>
 
@@ -55,12 +55,12 @@
     }
     else
     {
-        <p>None.</p>
+        <p>Нет.</p>
     }
 
     @if (Model.SampleResponses.Count > 0)
     {
-        <h3>Response Formats</h3>
+        <h3>Форматы ответа</h3>
         @Html.DisplayFor(m => m.SampleResponses, "Samples")
     }
 

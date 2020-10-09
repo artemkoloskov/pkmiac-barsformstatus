@@ -484,12 +484,16 @@
         <member name="M:PKMIAC.BARSFormStatus.Controllers.FormBundlesController.GetAllFormBundles">
             <summary>
             Получить полный список доступных пакетов форм
+            
+            GET api/FormBundles
             </summary>
             <returns>Списиок пакетов форм</returns>
         </member>
         <member name="M:PKMIAC.BARSFormStatus.Controllers.FormBundlesController.GetFormBundle(System.Guid)">
             <summary>
             Получить конкретный пакет форм
+            
+            GET api/FormBundles/03b15001-87cf-45ba-be9b-093c3de47388
             </summary>
             <param name="id">Уникальный идентификатор пакета форм</param>
             <returns>Пакет форм с загруженым списком компонентов отчетных периодов,
@@ -498,48 +502,598 @@
         <member name="M:PKMIAC.BARSFormStatus.Controllers.FormStatusController.GetFormStatus(System.Guid)">
             <summary>
             Получить конкретные хранимые данные формы
+            
+            GET api/FormStatus/711f7a03-4237-4b04-ad7e-64dac0471e61
             </summary>
             <param name="id">Уникальный идентификатор хранимых данных формы</param>
             <returns>Хранимые данные формы с загруженной организацией, к которой
             прикреплены данные формы</returns>
         </member>
-        <member name="M:PKMIAC.BARSFormStatus.Controllers.FormStatusController.GetFormStatus(System.Nullable{System.Guid},System.String)">
-            <summary>
-            Получить список хранимых данных форм, принадлежащих
-            определенному компоненту отчного периода, с возможностью фильтрации списка
-            по коду организации
-            </summary>
-            <param name="periodComponentId">Уникальный идентификатор компонента отчетного периода
-            которому принадлежат загружаемые хранимые данные форм</param>
-            <param name="organizationCode">Код организации, по которой нужно отфильтровать список</param>
-            <returns></returns>
-        </member>
-        <member name="M:PKMIAC.BARSFormStatus.Controllers.MetaFormsController.GetAllMetaForms">
-            <summary>
-            Получить весь список метаописаний отчетных форм
-            </summary>
-            <returns>Список метаописаний отчетных форм</returns>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:PKMIAC.BARSFormStatus.Controllers.FormStatusController.GetFormStatus(System.Nullable{System.Guid},System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:PKMIAC.BARSFormStatus.Controllers.MetaFormsController.GetMetaForms(System.String,System.String)" -->
         <member name="M:PKMIAC.BARSFormStatus.Controllers.MetaFormsController.GetMetaForm(System.Guid)">
             <summary>
             Получить конктреное метаописание отчетной формы
+            
+            GET api/MetaForms/1bf727cb-da31-4c2b-a2c8-57ecb99e5373
             </summary>
             <param name="id">Уникальный идентификатор отчетной формы</param>
             <returns>Метаописание отчетной формы</returns>
         </member>
-        <member name="M:PKMIAC.BARSFormStatus.Controllers.MetaFormsController.GetMetaFormByCode(System.String)">
+        <member name="M:PKMIAC.BARSFormStatus.Controllers.OrganizationsController.GetOrganizations(System.String,System.String,System.Boolean)">
             <summary>
-            Получить конктреное метаописание отчетной формы
+            Получить полный список всех организаций с возможностью фильтрации
+            по коду или наименованию организации. Опционально загрузить все хранимые данные формы
+            принадлежащие организации
+            
+            GET api/Organizations
             </summary>
-            <param name="code">Код отчетной формы</param>
-            <returns>Метаописание отчетной формы</returns>
+            <param name="name">Наименование организации</param>
+            <param name="code">Код организации</param>
+            <param name="includeStoredFormData">Включать/не включать загрузку 
+            хранимых данных формы</param>
+            <returns>Список организаций</returns>
         </member>
-        <member name="M:PKMIAC.BARSFormStatus.Controllers.MetaFormsController.GetMetaFormByName(System.String)">
+        <member name="M:PKMIAC.BARSFormStatus.Controllers.OrganizationsController.GetOrganization(System.Guid,System.Boolean)">
             <summary>
-            Получить конктреное метаописание отчетной формы
+            Получить конкретную организацию.
+            
+            GET api/Organizations/06caa0d2-3efd-47d9-85fe-1d1ff5899b48?includeStoredFormData=true
             </summary>
-            <param name="name">Наименование отчетной формы</param>
-            <returns>Метаописание отчетной формы</returns>
+            <param name="id">Уникальный идентификатор организации</param>
+            <param name="includeStoredFormData">Включать/не включать загрузку 
+            хранимых данных формы</param>
+            <returns>Организация</returns>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Controllers.ReportPeriodComponentsController.GetAllReportPeriodComponents">
+            <summary>
+            Получить список всех компонентов отчетных периодов
+            
+            GET api/ReportPeriodComponents
+            </summary>
+            <returns>Полный список компонентов отчетных периодов</returns>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Controllers.ReportPeriodComponentsController.GetReportPeriodComponent(System.Guid)">
+            <summary>
+            Получить конкретный компонент отчетного периода, с загруженными хранимыми данныи форм (с 
+            загруженной организацие, которой принадлежать хранимые данные), загруженным пкетом форм,
+            загруженным отчетным периодом, которому принадлежит компонент, загруженной цеочкой
+            сдачи отчетности.
+            
+            GET api/ReportPeriodComponents/cf8989b2-c120-400b-9ccf-4488d482c47b
+            </summary>
+            <param name="id">Уникальный идентификатор компонента отчетного периода</param>
+            <returns>Компонент отчетного периода</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PKMIAC.BARSFormStatus.Controllers.ReportPeriodComponentsController.GetReportPeriodComponentByCode(System.Nullable{System.Guid},System.String,System.String)" -->
+        <member name="M:PKMIAC.BARSFormStatus.Controllers.ReportPeriodsController.GetAllReportPeriods">
+            <summary>
+            Получить список всех отчетных периодов
+            
+            GET api/ReportPeriods
+            </summary>
+            <returns>Полный список отчетных периодов</returns>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Controllers.ReportPeriodsController.GetReportPeriod(System.Guid)">
+            <summary>
+            Получить конкретный отчетный период, с загруженными компонентами
+            отчетного периода
+            
+            GET api/ReportPeriods/4811d2e9-34bc-4aa3-939f-dedefa475d68
+            </summary>
+            <param name="id">Уникальный идентификатор отчетного периода</param>
+            <returns>Отчетный период</returns>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Controllers.ReportPeriodsController.GetReportPeriodByCode(System.String)">
+            <summary>
+            Получить конкретный отчетный период, с загруженными компонентами
+            отчетного периода
+            
+            GET api/ReportPeriod?code=ДЗПК_М_ИнфоОФедералИКраевДоплатахРаботникам
+            </summary>
+            <param name="code">Код отчетного периода</param>
+            <returns>>Отчетный период</returns>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Controllers.SubmitChainElementsController.GetReportSubmitChainElement(System.Guid)">
+            <summary>
+            Получить конкретный элемент цепочки сдачи отчетности, с загруженной
+            цепочкой, родительским элементом цепочки, элементами - потомками,
+            организацие, котороая является данным элементом цепочки.
+            
+            GET api/SubmitChainElements/2804d900-3477-443a-9aa9-4f74b7f924f7
+            </summary>
+            <param name="id">Уникальный идентификатор элемента цепочки сдачи отчетности</param>
+            <returns>Элемент цепочки отчетности</returns>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Controllers.SubmitChainElementsController.GetReportSubmitChainElementByChainCode(System.Nullable{System.Guid})">
+            <summary>
+            Получить список элементов конкретной цепочки отчетности.
+            
+            GET api/SubmitChainElements?chainId=d3f29683-75ab-46da-844e-a5416508482b
+            </summary>
+            <param name="chainId">Уникальный идентификтор цепочки отчетности</param>
+            <returns>Список элементов цеопчки отчетности</returns>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Controllers.SubmitChainsController.GetAllSubmitChains(System.String)">
+            <summary>
+            Получить список цепочек сдачи отчетности, с возможностью фильтрации по
+            коду цепочки. Фильтрованый список содержит загруженые компоненты отчетных периодов,
+            к которым относится цепочка.
+            
+            GET api/SubmitChains
+            </summary>
+            <param name="code">Код цепочки сдачи отчтености</param>
+            <returns>Список цепочек сдачи отчетности</returns>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Controllers.SubmitChainsController.GetSubmitChain(System.Guid)">
+            <summary>
+            Получить конкретную цепочку сдачи отчетности с загружеными компонентами отчетных периодов,
+            к которым относится цепочка.
+            
+            GET api/SubmitChains/d3f29683-75ab-46da-844e-a5416508482b
+            </summary>
+            <param name="id">Уникальный идентификтор цепочки</param>
+            <returns>Цепочка сдачи отчетности</returns>
+        </member>
+        <member name="T:PKMIAC.BARSFormStatus.Models.ReportSubmitChainElement">
+            <summary>
+            Элемент цепочки сдачи отчетности. Явлется контейнером для организации,
+            которой нужно будет сдавать отчет, закрепленный за компонентом отчетного периода, к которому
+            прикреплена цепочка.
+            </summary>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Models.ReportSubmitChainElement.#ctor">
+            <summary>
+            Конструткор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChainElement.OrganizationId">
+            <summary>
+            Уникальный идентификатор организации
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChainElement.Type">
+            <summary>
+            Тип элемента:
+             ЦентральныйОфис = 0,
+             Офис = 1,
+             Абонент = 2,
+             ПассивныйАбонент = 3
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChainElement.ParentId">
+            <summary>
+            Уникальный идентификатор родительского элемента при наличии
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChainElement.ReportSubmitChainId">
+            <summary>
+            Уникальный идентификатор цепочки
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChainElement.Id">
+            <summary>
+            Уникальный идентифкатор элемента цепочки
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChainElement.Name">
+            <summary>
+            Намиенование элемента, обычно свопадает с наименованием организации
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChainElement.ParentChainElement">
+            <summary>
+            Навигационное свойство с родительским элементом, при наличии
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChainElement.ChildrenElements">
+            <summary>
+            Навигационное свойство с потомками, при наличии
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChainElement.Organization">
+            <summary>
+            Навигационное свойство с организацией, которая явлется данным элементом
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChainElement.ReportSubmitChain">
+            <summary>
+            Навигационное свойство с цепочкой, элемнтом которй явлется данный элемент
+            </summary>
+        </member>
+        <member name="T:PKMIAC.BARSFormStatus.Models.ReportSubmitChain">
+            <summary>
+            Цепочка сдачи отчетности. Специальный объект, с иерархической структорой
+            содержащий все организации, которым нужно будет сдавать очеты из пекта очтетных форм
+            компонента, за которым данная цепочка закерпляется. Чаще всего родителем выступает 
+            элемент-организация Приморский край, с потомками в виде МО. Есть, впрочем, исключения
+            </summary>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Models.ReportSubmitChain.#ctor">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChain.Code">
+            <summary>
+            Код цепочки (уникальный). Обычно идет в формате 0123, но в случае, когда
+            у мониторинга менялся набор сдаваемых его организаций, для цепочки солздаются
+            копии с кодами формат "0123 01" (без кавычек)
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChain.IsDisabled">
+            <summary>
+            Признак активности цепочки
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChain.Id">
+            <summary>
+            Уникальный идентификатор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChain.Name">
+            <summary>
+            Наименование цепочки. Чаще всего сопадает с названием отчета. Так же содержит фамилию эксперта
+            отчета.
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChain.ReportPeriodComponents">
+            <summary>
+            Навигационное свойство со списком компонентов отчетных периодов, к оторым цепочка прикреплена
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportSubmitChain.ChainElements">
+            <summary>
+            Навигационное свойство со списком элементов данной цепочки сдачи отчетности
+            </summary>
+        </member>
+        <member name="T:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent">
+            <summary>
+            Компонет отчетного периода. Для разных очетов компонент отчетного периода может иметь разное
+            значение: 
+             1. для месячных, квартальных и полугодовых отчетов: каждому месяцу (кварталу/полугодию)
+             года выделяется отдельный отчетный период, в котором каждый компонент - 
+             это контейнер для пакета отчетных форм, которые нужно заполнять организации
+             2. для ежедневных и еженедельных - обратная ситуация: каждому отчету выделяется отдельный отчетный период,
+             в котором каждый компонент - это отчет за определнный день/неделю
+             3. для запросов: каждому год для запросов выделен отдельный отчетный период,
+             в котором кадый компонент - это отдельный запрос.
+             4. у Нац проектов своя структура, консультация с Ефремовым Д. В.
+            </summary>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.#ctor">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.Code">
+            <summary>
+            Код компонента - обычно это порядковый номер компонента в отчетном периоде
+            в форате 001, 002 и т.д.
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.FormBundleId">
+            <summary>
+            Уникальный идентификатор пакета форм, который содержится в данном компоненте периода
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.ReportSubmitChainId">
+            <summary>
+            Уникальный идентификатор цепочки сдачи отчетности, которая сожержит организации,
+            которым нужно заполнить формы, содержащиеся в пакете форм данногшо компонента
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.ReportPeriodId">
+            <summary>
+            Уникальный идентификатор отчетного периода, к котором относится компонент отчетного периода
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.EqualityGroup">
+            <summary>
+            Группа эквивалентности. уточнить у Ефремова Д. В. назначение. У еженедельных и ежедневных отчетов
+            совпадает с наименованием компоента
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.Id">
+            <summary>
+            Уникальный идентификатор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.Name">
+            <summary>
+            Наименование компонента отчетного периода. Имеет разное значение:
+             1. У месячных, квартальных, полугодовых содержит описание мониторинга, который заполняется
+             организацие в данном компоненте
+             2. У ежедневных, еженедельных содержит порядковый номер компонента в периоде (совпадаетс кодом
+             компонента) и период за который в компоненте содержится отчет, вида: "05. на 15.08.2020" и т.п
+             3. у запросов содержит Номер запроса и описание его сути, вида: "З-802. Отчет такой-то"
+             4. У нац. проектов своя схема - уточнить у Ефремова Д. В.
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.IsDisabled">
+            <summary>
+            Признак того, что компонент активен. Неактивный компонент не будет виден организации,
+            его отчеты не будут заполнены
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.ReportSubmitChain">
+            <summary>
+            Навигационное свойство с цепочкой сдачи отчетности, которая сожержит организации,
+            которым нужно заполнить формы, содержащиеся в пакете форм данногшо компонента 
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.ReportPeriod">
+            <summary>
+            Навигационное свойство с отчетным периодом, к которому относится компонент отчетного периода
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.FormsBundle">
+            <summary>
+            Навигационное свойство с пакетом форм, который содержится в данном компоненте периода
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriodComponent.StoredFormData">
+            <summary>
+            Навигационное свойство со списком хранимых данных форм, заполняемых организациями, в которых
+            содержится информация о статусе заполнения форм
+            </summary>
+        </member>
+        <member name="T:PKMIAC.BARSFormStatus.Models.ReportPeriod">
+            <summary>
+            Отчетный период. Для разных очетов отчетный период может иметь разное
+            значение: 
+             1. для месячных, квартальных и полугодовых отчетов: каждому месяцу (кварталу/полугодию)
+             года выделяется отдельный отчетный период,
+             в котором каждый компонент - это контейнер для пакета отчетных форм, которые нужно 
+             заполнять организации
+             2. для ежедневных и еженедельных - обратная ситуация: каждому отчету выделяется отдельный отчетный период,
+             в котором каждый компонент - это отчет за определнный день/неделю
+             3. для запросов: каждому год для запросов выделен отдельный отчетный период,
+             в котором кадый компонент - это отдельный запрос.
+             4. у Нац проектов своя структура, консультация с Ефремовым Д. В.
+            </summary>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Models.ReportPeriod.#ctor">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriod.Code">
+            <summary>
+            Код очтеного периода:
+             - Месячные_Август_2020 и т.п. - для месчных, полугодовых, кватальных
+             - ДЗПК_М_Мониторинг - по коду метаописания отчетной формы для ежедневных и еженедельных
+             - Запросы_МЗПК_2020 - для запросов
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriod.StartDate">
+            <summary>
+            Начало действия отчетного периода (используется для месячных, квартальных и годовых)
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriod.EndDate">
+            <summary>
+            Конец действия отчетного периода (используется для месячных, квартальных и годовых)
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriod.IsDisabled">
+            <summary>
+            Признак того, что отчетный период активен. Отчеты в неактивных отчетных периодах
+            не будут заполнены организацией
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriod.IsBlocked">
+            <summary>
+            Признак того, что отчетный период заблокирован для заполнения. 
+            Отчеты в неактивных отчетных периодах не будут заполнены организацией
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriod.Id">
+            <summary>
+            Уникальный идентификатор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.ReportPeriod.Name">
+            <summary>
+            Наименование отчектного периода
+            </summary>
+        </member>
+        <member name="T:PKMIAC.BARSFormStatus.Models.FormBundle">
+            <summary>
+            Пакет отчетных форм. В МИАЦ чаще всего пакет соджержит только одну конкретную форму.
+            Пакет является главной составляющей компонента отчетного периода, он указывает 
+            компоененту какие формы нужно заполнять организации в данном компоненте отчетного
+            периода
+            </summary>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Models.FormBundle.#ctor">
+            <summary>
+            конструктор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.FormBundle.Code">
+            <summary>
+            Код пакета отчетных форм. Обычно совпадает с кодом метаописания формы, которая
+            входит в пакет
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.FormBundle.IsDisabled">
+            <summary>
+            Признак того, акивен ли пакет или нет. Если пакет не активен - отчеты входящие в него
+            не будут заполняться организацией
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.FormBundle.Id">
+            <summary>
+            Уникальный идентификатор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.FormBundle.Name">
+            <summary>
+            Наименование пакета, обычно совпадает с кодом
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.FormBundle.ReportPeriodComponents">
+            <summary>
+            Навигационное свойство со списокм компонентов отчетного периода, использующих
+            данный пакет
+            </summary>
+        </member>
+        <member name="T:PKMIAC.BARSFormStatus.Models.StoredFormData">
+            <summary>
+            Хранимые данные формы - объект, содержащий аттрибуты конкретного отчета, заполненого конкретной
+            организацие, в конкретном компоненте отчетного периода
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.StoredFormData.OrganizationId">
+            <summary>
+            Уникальный идентификатор организации, которая заполняет данную форму
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.StoredFormData.MetaFormCode">
+            <summary>
+            Код метаописания отчетной формы
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.StoredFormData.StatusNumber">
+            <summary>
+            СТАТУС ЗАПОЛНЕНИЯ ФОРМЫ:
+             Пусто = 0,
+             Черновик = 1,
+             Заполнено = 2,
+             Проверено = 3,
+             Экспертиза = 4,
+             Утверждено = 5
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.StoredFormData.InternalConstraintsStatusNumber">
+            <summary>
+            Статус проверки внутриформенных увязок:
+             НеПроверено = 0,
+             ИмеютсяОшибки = 1,
+             ИмеютсяПредупреждения = 2,
+             Проверено = 3
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.StoredFormData.ExternalConstraintsStatusNumber">
+            <summary>
+            Статус проверки межформенных увязок:
+             НеПроверено = 0,
+             ИмеютсяОшибки = 1,
+             ИмеютсяПредупреждения = 2,
+             Проверено = 3
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.StoredFormData.ReportPeriodComponentId">
+            <summary>
+            Уникальный идентификатор компонента отчетного периода, в котором заполнена данная форма
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.StoredFormData.SubmitChainElementType">
+            <summary>
+            Тип элемента цепочки сдачи отчетных форм, который заполнял форму
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.StoredFormData.ExpertStatusNumber">
+            <summary>
+            Статус экспертизы:
+             НеПройдена = 0,
+             ИмеютсяОшибки = 1,
+             Пройдена = 2
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.StoredFormData.Id">
+            <summary>
+            Уникальный идентифкатор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.StoredFormData.ReportPeriodComponent">
+            <summary>
+            Навигационное свойство с компонентом, в котором была заполнена форма
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.StoredFormData.Organization">
+            <summary>
+            Навигационное свойство с организацией, которая заполнила форму
+            </summary>
+        </member>
+        <member name="T:PKMIAC.BARSFormStatus.Models.MetaForm">
+            <summary>
+            Метописание отчетной формы
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.MetaForm.Code">
+            <summary>
+            Код метаописания. Часто его называю кодом формы
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.MetaForm.Id">
+            <summary>
+            Уникальный идентификатор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.MetaForm.Name">
+            <summary>
+            Намиенование формы. Обычно совпадает с названием мониторинга, без
+            порядкового номера в начале.
+            </summary>
+        </member>
+        <member name="T:PKMIAC.BARSFormStatus.Models.Organization">
+            <summary>
+            Организация. В случае МИАЦ - МО
+            </summary>
+        </member>
+        <member name="M:PKMIAC.BARSFormStatus.Models.Organization.#ctor">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.Organization.Name">
+            <summary>
+            Наименование организации
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.Organization.Code">
+            <summary>
+            Код организации в формате 33322211100
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.Organization.Region">
+            <summary>
+            Регион расположения
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.Organization.LocalityType">
+            <summary>
+            Тип населенного пункта (г., с. и т.п.)
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.Organization.LocalityName">
+            <summary>
+            Наименование населенного пункта
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.Organization.Terminated">
+            <summary>
+            Признак того, что организация ликвидирована
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.Organization.Id">
+            <summary>
+            Уникальный идентификатор
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.Organization.StoredFormData">
+            <summary>
+            Навигационное свойство со списокм хранимых данных форм,
+            заполненяемых организацией
+            </summary>
+        </member>
+        <member name="P:PKMIAC.BARSFormStatus.Models.Organization.ChainElements">
+            <summary>
+            Навигационное свойство со списком элемнтов цепочек, в которые входит
+            оргнанизация
+            </summary>
         </member>
     </members>
 </doc>
