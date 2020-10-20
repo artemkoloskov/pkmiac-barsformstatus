@@ -2,19 +2,21 @@
 using PKMIAC.BARSFormStatus.Data;
 using PKMIAC.BARSFormStatus.Models;
 using System;
-using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Tracing;
 
 namespace PKMIAC.BARSFormStatus.Controllers
 {
 	[RoutePrefix("api/FormBundles")]
 	public class FormBundlesController : ApiController
 	{
+		private readonly BFSConfig bfsConfig = (BFSConfig)ConfigurationManager.GetSection("bfsConfigs");
+
 		private readonly BFSContext _db = new BFSContext();
 
 		/// <summary>
@@ -26,6 +28,11 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		// GET api/FormBundles
 		public IQueryable<FormBundle> GetAllFormBundles()
 		{
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+
 			return from s in _db.FormBundles
 				   select s;
 		}
@@ -42,6 +49,11 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		[ResponseType(typeof(FormBundle))]
 		public async Task<IHttpActionResult> GetFormBundle(Guid id)
 		{
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+
 			FormBundle formBundle = await _db.FormBundles
 				.Where(b => b.Id == id)
 				.Include(b => b.ReportPeriodComponents)

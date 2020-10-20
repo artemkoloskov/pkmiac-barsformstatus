@@ -3,18 +3,21 @@ using PKMIAC.BARSFormStatus.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Web.Http.Description;
+using System.Configuration;
+using System.Web.Http.Tracing;
 
 namespace PKMIAC.BARSFormStatus.Controllers
 {
 	[RoutePrefix("api/MetaForms")]
 	public class MetaFormsController : ApiController
 	{
+		private readonly BFSConfig bfsConfig = (BFSConfig)ConfigurationManager.GetSection("bfsConfigs");
+
 		private readonly BFSContext _db = new BFSContext();
 
 		/// <summary>
@@ -30,6 +33,11 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		[ResponseType(typeof(List<MetaForm>))]
 		public async Task<IHttpActionResult> GetMetaForms(string name = null, string code = null)
 		{
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+
 			if (name != null || code != null)
 			{
 				MetaForm metaForm =
@@ -65,6 +73,11 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		[ResponseType(typeof(MetaForm))]
 		public async Task<IHttpActionResult> GetMetaForm(Guid id)
 		{
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+
 			MetaForm metaForm =
 				await _db.MetaForms
 				.Where(mf => mf.Id == id)

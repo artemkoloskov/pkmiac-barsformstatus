@@ -3,18 +3,21 @@ using PKMIAC.BARSFormStatus.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Web.Http.Description;
+using System.Configuration;
+using System.Web.Http.Tracing;
 
 namespace PKMIAC.BARSFormStatus.Controllers
 {
 	[RoutePrefix("api/SubmitChains")]
 	public class SubmitChainsController : ApiController
 	{
+		private readonly BFSConfig bfsConfig = (BFSConfig)ConfigurationManager.GetSection("bfsConfigs");
+
 		private readonly BFSContext _db = new BFSContext();
 
 		/// <summary>
@@ -30,7 +33,12 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		[ResponseType(typeof(List<ReportSubmitChain>))]
 		public async Task<IHttpActionResult> GetAllSubmitChains(string code = null)
 		{
-			var request = 
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+
+			var request =
 				_db.ReportSubmitChains
 				.Where(sc => code == null || sc.Code == code);
 
@@ -40,7 +48,7 @@ namespace PKMIAC.BARSFormStatus.Controllers
 					.Include(sc => sc.ReportPeriodComponents);
 			}
 
-			List<ReportSubmitChain> submitChains = 
+			List<ReportSubmitChain> submitChains =
 				await request.ToListAsync();
 
 			if (submitChains == null)
@@ -63,6 +71,11 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		[ResponseType(typeof(ReportSubmitChain))]
 		public async Task<IHttpActionResult> GetSubmitChain(Guid id)
 		{
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+
 			ReportSubmitChain submitChain = await _db.ReportSubmitChains
 				.Where(sc => sc.Id == id)
 				.Include(sc => sc.ReportPeriodComponents)

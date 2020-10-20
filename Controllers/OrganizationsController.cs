@@ -3,16 +3,21 @@ using PKMIAC.BARSFormStatus.Data;
 using PKMIAC.BARSFormStatus.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Reflection;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Tracing;
 
 namespace PKMIAC.BARSFormStatus.Controllers
 {
 	[RoutePrefix("api/Organizations")]
 	public class OrganizationsController : ApiController
 	{
+		private readonly BFSConfig bfsConfig = (BFSConfig)ConfigurationManager.GetSection("bfsConfigs");
+
 		private readonly BFSContext _db = new BFSContext();
 
 		/// <summary>
@@ -30,10 +35,15 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		// GET api/Organizations
 		[ResponseType(typeof(List<Organization>))]
 		public async Task<IHttpActionResult> GetOrganizations(
-			string name = null, 
-			string code = null, 
+			string name = null,
+			string code = null,
 			bool includeStoredFormData = false)
 		{
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+
 			IQueryable<Organization> request =
 				_db.Organizations
 				.Where(o => name == null || o.Name == name)
@@ -47,7 +57,7 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			}
 
 			organizations =
-				await request				
+				await request
 				.ToListAsync();
 
 			return organizations == null || organizations.Count() == 0 ? NotFound() : (IHttpActionResult)Ok(organizations);
@@ -66,6 +76,11 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		[ResponseType(typeof(Organization))]
 		public async Task<IHttpActionResult> GetOrganization(Guid id, bool includeStoredFormData = false)
 		{
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+
 			IQueryable<Organization> request =
 				_db.Organizations
 				.Where(o => o.Id == id);
@@ -74,14 +89,14 @@ namespace PKMIAC.BARSFormStatus.Controllers
 
 			if (includeStoredFormData)
 			{
-				organization = 
+				organization =
 					await request
 					.Include(o => o.StoredFormData)
 					.FirstOrDefaultAsync();
 			}
 			else
 			{
-				organization = 
+				organization =
 					await request.
 					FirstOrDefaultAsync();
 			}

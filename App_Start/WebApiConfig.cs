@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Configuration;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Http.Tracing;
 
 namespace PKMIAC.BARSFormStatus
 {
@@ -13,10 +13,24 @@ namespace PKMIAC.BARSFormStatus
 		public static void Register(HttpConfiguration config)
 		{
 			// Конфигурация и службы веб-API
+			BFSConfig bfsConfig = (BFSConfig)ConfigurationManager.GetSection("bfsConfigs");
+
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				SystemDiagnosticsTraceWriter traceWriter = config.EnableSystemDiagnosticsTracing();
+				traceWriter.IsVerbose = true;
+				traceWriter.MinimumLevel = TraceLevel.Debug;
+
+				System.Diagnostics.Trace.Listeners.Clear();
+				System.Diagnostics.Trace.Listeners.Add(
+				   new System.Diagnostics.TextWriterTraceListener("C:\\BARSFormStatus\\trace.txt")); 
+			}
 
 			//Конфигурация службы для возврата данных в формате JSON
 			config.Formatters.Add(new BrowserJsonFormatter());
 
+			config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling
+				= ReferenceLoopHandling.Ignore;
 
 			// Маршруты веб-API
 			config.MapHttpAttributeRoutes();

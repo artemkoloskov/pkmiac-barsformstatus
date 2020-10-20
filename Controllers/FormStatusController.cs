@@ -3,18 +3,24 @@ using PKMIAC.BARSFormStatus.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Web.Http.Description;
+using System.Web.Http.Tracing;
+using System.Configuration;
 
 namespace PKMIAC.BARSFormStatus.Controllers
 {
+	/// <summary>
+	/// Контроллер получения хранимых данных форм
+	/// </summary>
 	[RoutePrefix("api/FormStatus")]
 	public class FormStatusController : ApiController
 	{
+		private readonly BFSConfig bfsConfig = (BFSConfig)ConfigurationManager.GetSection("bfsConfigs");
+
 		private readonly BFSContext _db = new BFSContext();
 
 		/// <summary>
@@ -29,7 +35,12 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		[ResponseType(typeof(StoredFormData))]
 		public async Task<IHttpActionResult> GetFormStatus(Guid id)
 		{
-			StoredFormData storedFormData = 
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+
+			StoredFormData storedFormData =
 				await _db.StoredFormDatas
 				.Where(sd => sd.Id == id)
 				.Include(sd => sd.Organization)
@@ -60,6 +71,11 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			Guid? periodComponentId,
 			string organizationCode = null)
 		{
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+
 			List<StoredFormData> storedFormData = await _db.StoredFormDatas
 				.Where(sd => !periodComponentId.HasValue || sd.ReportPeriodComponentId == periodComponentId)
 				.Where(sd => organizationCode == null || sd.Organization.Code == organizationCode)

@@ -3,18 +3,21 @@ using PKMIAC.BARSFormStatus.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Web.Http.Description;
+using System.Configuration;
+using System.Web.Http.Tracing;
 
 namespace PKMIAC.BARSFormStatus.Controllers
 {
 	[RoutePrefix("api/ReportPeriodComponents")]
 	public class ReportPeriodComponentsController : ApiController
 	{
+		private readonly BFSConfig bfsConfig = (BFSConfig)ConfigurationManager.GetSection("bfsConfigs");
+
 		private readonly BFSContext _db = new BFSContext();
 
 		/// <summary>
@@ -26,6 +29,11 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		// GET api/ReportPeriodComponents
 		public IQueryable<ReportPeriodComponent> GetAllReportPeriodComponents()
 		{
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+
 			return from s in _db.ReportPeriodComponents
 				   select s;
 		}
@@ -82,6 +90,11 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			string name = null,
 			string code = null)
 		{
+			if (bfsConfig.Logging.TraceEnabled)
+			{
+				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+
 			var request =
 				_db.ReportPeriodComponents
 				.Where(rpc => rpc.ReportPeriodId == periodId);
@@ -117,8 +130,8 @@ namespace PKMIAC.BARSFormStatus.Controllers
 			}
 
 			return NotFound();
-			
-			
+
+
 		}
 	}
 }

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Web;
+﻿using Microsoft.EntityFrameworkCore;
 using PKMIAC.BARSFormStatus.Models;
 using System.Configuration;
-using Oracle.ManagedDataAccess.Client;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
 
 namespace PKMIAC.BARSFormStatus.Data
 {

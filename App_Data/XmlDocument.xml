@@ -499,6 +499,11 @@
             <returns>Пакет форм с загруженым списком компонентов отчетных периодов,
             которые его используют</returns>
         </member>
+        <member name="T:PKMIAC.BARSFormStatus.Controllers.FormStatusController">
+            <summary>
+            Контроллер получения хранимых данных форм
+            </summary>
+        </member>
         <member name="M:PKMIAC.BARSFormStatus.Controllers.FormStatusController.GetFormStatus(System.Guid)">
             <summary>
             Получить конкретные хранимые данные формы
