@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 using System.IO;
+using System.Configuration;
 
 namespace PKMIAC.BARSFormStatus.Data
 {
@@ -22,7 +23,9 @@ namespace PKMIAC.BARSFormStatus.Data
 
 			public bool IsEnabled(LogLevel logLevel)
 			{
-				return true;
+				BFSConfig bfsConfig = (BFSConfig)ConfigurationManager.GetSection("bfsConfigs");
+
+				return bfsConfig.Logging.BasicLoggerEnabled;
 			}
 
 			public void Log<TState>(LogLevel logLevel, EventId eventId,

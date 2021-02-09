@@ -11,17 +11,24 @@ namespace PKMIAC.BARSFormStatus
 		[ConfigurationProperty("logging", IsRequired = false)]
 		public LoggingConаigElement Logging
 		{
-			get { return (LoggingConаigElement)this["logging"]; }
-			set { this["logging"] = value; }
+			get => (LoggingConаigElement)this["logging"];
+			set => this["logging"] = value;
 		}
 
 		public class LoggingConаigElement : ConfigurationElement
 		{
-			[ConfigurationProperty("traceEnabled", DefaultValue = true, IsRequired = false)]
+			[ConfigurationProperty("traceEnabled", DefaultValue = false, IsRequired = false)]
 			public bool TraceEnabled
 			{
-				get { return (bool)this["traceEnabled"]; }
-				set { this["traceEnabled"] = value; }
+				get => (bool)this["traceEnabled"];
+				set => this["traceEnabled"] = value;
+			}
+
+			[ConfigurationProperty("basicLoggerEnabled", DefaultValue = false, IsRequired = false)]
+			public bool BasicLoggerEnabled
+			{
+				get => (bool)this["basicLoggerEnabled"];
+				set => this["basicLoggerEnabled"] = value;
 			}
 		}
 	}
