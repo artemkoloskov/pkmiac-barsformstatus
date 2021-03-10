@@ -278,6 +278,13 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <None Include="packages.config" />
+    <Content Include="dummyWeb.config" />
+    <Content Include="dummyWeb.Debug.config">
+      <DependentUpon>dummyWeb.config</DependentUpon>
+    </Content>
+    <Content Include="dummyWeb.Release.config">
+      <DependentUpon>dummyWeb.config</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
