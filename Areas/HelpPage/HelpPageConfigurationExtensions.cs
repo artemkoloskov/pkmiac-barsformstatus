@@ -385,7 +385,6 @@ namespace PKMIAC.BARSFormStatus.Areas.HelpPage
 			}
 		}
 
-		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "The exception is recorded as ErrorMessages.")]
 		private static void GenerateSamples(HelpPageApiModel apiModel, HelpPageSampleGenerator sampleGenerator)
 		{
 			try

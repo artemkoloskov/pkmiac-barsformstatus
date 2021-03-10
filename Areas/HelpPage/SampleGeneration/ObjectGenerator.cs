@@ -35,7 +35,6 @@ namespace PKMIAC.BARSFormStatus.Areas.HelpPage
 			return GenerateObject(type, new Dictionary<Type, object>());
 		}
 
-		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Here we just want to return null if anything goes wrong.")]
 		private object GenerateObject(Type type, Dictionary<Type, object> createdObjectReferences)
 		{
 			try
@@ -398,7 +397,6 @@ namespace PKMIAC.BARSFormStatus.Areas.HelpPage
 			private long _index = 0;
 			private static readonly Dictionary<Type, Func<long, object>> DefaultGenerators = InitializeGenerators();
 
-			[SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "These are simple type factories and cannot be split up.")]
 			private static Dictionary<Type, Func<long, object>> InitializeGenerators()
 			{
 				return new Dictionary<Type, Func<long, object>>
