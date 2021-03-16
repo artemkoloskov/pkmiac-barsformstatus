@@ -57,7 +57,12 @@ namespace PKMIAC.BARSFormStatus.Controllers
 		/// <summary>
 		/// Получить список хранимых данных форм, принадлежащих
 		/// определенному компоненту отчного периода, с возможностью фильтрации списка
-		/// по коду организации
+		/// по коду организации. Если организация из цепочки сдачи отчетности
+		/// не заполняла отчет, у нее нет хранимых данных, соответственно они не выгружаются
+		/// ответом на запрос. Поэтому метод пробегает по цепочке отчетности,
+		/// сверяет ее со списком хранимых данных и для тех организаций,
+		/// у которых их нет, заполняет список "болванками" хранимых данных, со статусами 0
+		/// (не заполнено/не проверено).
 		/// 
 		/// GET api/FormStatus?periodComponentId=cf8989b2-c120-400b-9ccf-4488d482c47b&organizationCode=030683508
 		/// </summary>
@@ -76,11 +81,42 @@ namespace PKMIAC.BARSFormStatus.Controllers
 				Configuration.Services.GetTraceWriter().Info(Request, "Контроллер " + GetType().Name, MethodBase.GetCurrentMethod().Name);
 			}
 
+			ReportPeriodComponent reportPeriodComponent = await _db.ReportPeriodComponents.Where(c => c.Id == periodComponentId).FirstOrDefaultAsync();
+
+			ReportSubmitChain reportSubmitChain = await _db.ReportSubmitChains
+				.Where(c => c.Id == reportPeriodComponent.ReportSubmitChainId)
+				.Include(c => c.ChainElements)
+					.ThenInclude(e => e.Organization)
+				.FirstOrDefaultAsync();
+
 			List<StoredFormData> storedFormData = await _db.StoredFormDatas
 				.Where(sd => !periodComponentId.HasValue || sd.ReportPeriodComponentId == periodComponentId)
 				.Where(sd => organizationCode == null || sd.Organization.Code == organizationCode)
 				.Include(sd => sd.Organization)
 				.ToListAsync();
+
+			foreach (ReportSubmitChainElement chainElement in reportSubmitChain.ChainElements)
+			{
+				string metaFormCode = storedFormData.Count == 0 ? "" : storedFormData.FirstOrDefault().MetaFormCode;
+
+				if (storedFormData.Where(s => s.OrganizationId == chainElement.OrganizationId).Count() == 0)
+				{
+					storedFormData.Add(new StoredFormData()
+					{
+						StatusNumber = 0,
+						Organization = chainElement.Organization,
+						ExpertStatusNumber = 0,
+						ExternalConstraintsStatusNumber = 0,
+						InternalConstraintsStatusNumber = 0,
+						ReportPeriodComponent = reportPeriodComponent,
+						ReportPeriodComponentId = reportPeriodComponent.Id,
+						OrganizationId = chainElement.OrganizationId,
+						SubmitChainElementType = chainElement.Type,
+						MetaFormCode = metaFormCode,
+						Id = null,
+					});
+				}
+			}
 
 			if (storedFormData == null)
 			{

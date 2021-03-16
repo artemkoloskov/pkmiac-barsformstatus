@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace PKMIAC.BARSFormStatus.Models
@@ -50,10 +51,12 @@ namespace PKMIAC.BARSFormStatus.Models
 		/// <summary>
 		/// Навигационное свойство с родительским элементом, при наличии
 		/// </summary>
+		[JsonIgnore]
 		public virtual ReportSubmitChainElement ParentChainElement { get; set; }
 		/// <summary>
 		/// Навигационное свойство с потомками, при наличии
 		/// </summary>
+		[JsonIgnore]
 		public virtual ICollection<ReportSubmitChainElement> ChildrenElements { get; set; }
 		/// <summary>
 		/// Навигационное свойство с организацией, которая явлется данным элементом

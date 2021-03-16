@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace PKMIAC.BARSFormStatus.Models
 {
@@ -65,6 +66,7 @@ namespace PKMIAC.BARSFormStatus.Models
 		/// <summary>
 		/// Навигационное свойство с компонентом, в котором была заполнена форма
 		/// </summary>
+		[JsonIgnore]
 		public virtual ReportPeriodComponent ReportPeriodComponent { get; set; }
 		/// <summary>
 		/// Навигационное свойство с организацией, которая заполнила форму

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace PKMIAC.BARSFormStatus.Models
@@ -56,6 +57,7 @@ namespace PKMIAC.BARSFormStatus.Models
 		/// Навигационное свойство со списком элемнтов цепочек, в которые входит
 		/// оргнанизация
 		/// </summary>
+		[JsonIgnore]
 		public virtual ICollection<ReportSubmitChainElement> ChainElements { get; set; }
 	}
 }
