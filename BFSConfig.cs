@@ -4,6 +4,9 @@ namespace PKMIAC.BARSFormStatus
 {
 	public class BFSConfig : ConfigurationSection
 	{
+		/// <summary>
+		/// Конфиг-провайдер для серивса
+		/// </summary>
 		public BFSConfig()
 		{
 		}
